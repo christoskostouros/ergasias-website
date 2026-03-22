@@ -32,6 +32,7 @@ const fullTitle = title === 'Αρχική' ? `${settings.company_title} - ${sett
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 
   <!-- Smart Dark Mode: Greece timezone detection (runs before paint) -->
   <script is:inline>
@@ -83,6 +84,19 @@ const fullTitle = title === 'Αρχική' ? `${settings.company_title} - ${sett
     <slot />
   </main>
   <Footer />
+
+  <!-- Netlify Identity redirect -->
+  <script is:inline>
+    if (window.netlifyIdentity) {
+      window.netlifyIdentity.on('init', function(user) {
+        if (!user) {
+          window.netlifyIdentity.on('login', function() {
+            document.location.href = '/admin/';
+          });
+        }
+      });
+    }
+  </script>
 
   <!-- Scroll animation observer -->
   <script is:inline>
