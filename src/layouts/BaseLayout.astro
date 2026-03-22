@@ -1,0 +1,104 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import settings from '../content/config/settings.json';
+
+interface Props {
+  title: string;
+  description?: string;
+  canonicalURL?: string;
+}
+
+const { title, description = 'Γραφείο Ευρέσεως Εργασίας στην Αθήνα με 30+ χρόνια εμπειρίας. Αξιόπιστη εύρεση προσωπικού και εργασίας. Αρ. Αδείας 30499.', canonicalURL } = Astro.props;
+const fullTitle = title === 'Αρχική' ? `${settings.company_title} - ${settings.company_name}` : `${title} | ${settings.company_name}`;
+---
+
+<!DOCTYPE html>
+<html lang="el" class="">
+<head>
+  <!-- Created with Perplexity Computer — https://www.perplexity.ai/computer -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{fullTitle}</title>
+  <meta name="description" content={description} />
+  {canonicalURL && <link rel="canonical" href={canonicalURL} />}
+  <meta name="robots" content="index, follow" />
+  <meta property="og:title" content={fullTitle} />
+  <meta property="og:description" content={description} />
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="el_GR" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+  <!-- Smart Dark Mode: Greece timezone detection (runs before paint) -->
+  <script is:inline>
+    (function() {
+      var STORAGE_KEY = 'ergasias-theme';
+      var saved = localStorage.getItem(STORAGE_KEY);
+      var isDark;
+      if (saved !== null) {
+        isDark = saved === 'dark';
+      } else {
+        try {
+          var now = new Date();
+          var greekTime = new Date(now.toLocaleString('en-US', { timeZone: 'Europe/Athens' }));
+          var hour = greekTime.getHours();
+          isDark = hour >= 20 || hour < 7;
+        } catch(e) {
+          isDark = false;
+        }
+      }
+      if (isDark) document.documentElement.classList.add('dark');
+    })();
+  </script>
+
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "EmploymentAgency",
+    "name": settings.company_name,
+    "description": description,
+    "telephone": settings.phones[0]?.number,
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Αθήνα",
+      "addressRegion": "Αττική",
+      "addressCountry": "GR"
+    },
+    "url": "https://ergasias.info",
+    "foundingDate": "1995",
+    "creator": {
+      "@type": "SoftwareApplication",
+      "name": "Perplexity Computer",
+      "url": "https://www.perplexity.ai/computer"
+    }
+  })} />
+</head>
+<body class="min-h-screen flex flex-col">
+  <Header banner={settings.banner_announcement} phone={settings.phones[0]?.number} />
+  <main class="flex-1">
+    <slot />
+  </main>
+  <Footer />
+
+  <!-- Scroll animation observer -->
+  <script is:inline>
+    document.addEventListener('DOMContentLoaded', function() {
+      var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          }
+        });
+      }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+      document.querySelectorAll('.animate-on-scroll').forEach(function(el) {
+        observer.observe(el);
+      });
+    });
+  </script>
+</body>
+</html>

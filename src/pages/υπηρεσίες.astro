@@ -1,0 +1,245 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const services = [
+  {
+    id: 'oikiako',
+    title: 'Οικιακό Προσωπικό',
+    description: 'Αξιόπιστο και εκπαιδευμένο προσωπικό για κάθε ανάγκη του σπιτιού σας.',
+    icon: 'home',
+    color: 'emerald',
+    groups: [
+      {
+        name: 'Φροντίδα Παιδιών',
+        roles: ['Νταντάδες (Nannies)', 'Baby Sitters', 'Παιδαγωγοί', 'Βρεφονηπιοκόμοι'],
+      },
+      {
+        name: 'Φροντίδα Ηλικιωμένων & ΑμεΑ',
+        roles: ['Γηροκόμοι', 'Νοσηλευτές / Νοσηλεύτριες', 'Φροντιστές ΑμεΑ', 'Συνοδοί ηλικιωμένων'],
+      },
+      {
+        name: 'Οικιακή Βοήθεια',
+        roles: ['Οικιακοί Βοηθοί', 'Καθαρίστριες', 'Υπηρετικό Προσωπικό', 'Ζευγάρια (Οικονόμος & Βοηθός)', 'Μάγειρες κατ\' οίκον'],
+      },
+    ],
+  },
+  {
+    id: 'touristika',
+    title: 'Τουριστικά Επαγγέλματα',
+    description: 'Εξειδικευμένο προσωπικό για ξενοδοχεία, εστιατόρια και τουριστικές επιχειρήσεις.',
+    icon: 'hotel',
+    color: 'amber',
+    groups: [
+      {
+        name: 'Προσωπικό Εστίασης',
+        roles: ['Chef / Σεφ', 'Μάγειρες', 'Βοηθοί Μάγειρα', 'Βοηθοί Κουζίνας', 'Ψήστες', 'Λαντζιέρες', 'Σερβιτόροι / Σερβιτόρες'],
+      },
+      {
+        name: 'Προσωπικό Ξενοδοχείων',
+        roles: ['Υπάλληλοι Ρεσεψιόν', 'Καμαριέρες', 'Ξενοδοχοϋπάλληλοι', 'Συντηρητές Ξενοδοχείων'],
+      },
+      {
+        name: 'Τεχνικό & Βοηθητικό',
+        roles: ['Κηπουροί', 'Υδραυλικοί', 'Ηλεκτρολόγοι', 'Εργάτες', 'Φύλακες'],
+      },
+    ],
+  },
+  {
+    id: 'stelechosi',
+    title: 'Στελέχωση Επιχειρήσεων',
+    description: 'Παροχή διοικητικού και εμπορικού προσωπικού σε επιχειρήσεις κάθε μεγέθους.',
+    icon: 'briefcase',
+    color: 'violet',
+    groups: [
+      {
+        name: 'Διοικητικό Προσωπικό',
+        roles: ['Γραμματείς', 'Υπάλληλοι Γραφείου', 'Βοηθοί Διοίκησης', 'Υπάλληλοι Υποδοχής'],
+      },
+      {
+        name: 'Εμπορικό Προσωπικό',
+        roles: ['Πωλητές / Πωλήτριες', 'Υπεύθυνοι Πωλήσεων', 'Προσωπικό Εξυπηρέτησης Πελατών'],
+      },
+    ],
+  },
+];
+
+const iconMap: Record<string, string> = {
+  home: 'M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25',
+  hotel: 'M2.25 21h19.5M3.75 3v18m16.5-18v18M5.25 3h13.5M5.25 21h13.5M9 6.75h1.5m-1.5 3h1.5m-1.5 3h1.5m3-6H15m-1.5 3H15m-1.5 3H15M9 21v-3.375c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125V21',
+  briefcase: 'M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 00.75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 00-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0112 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 01-.673-.38m0 0A2.18 2.18 0 013 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 013.413-.387m7.5 0V5.25A2.25 2.25 0 0013.5 3h-3a2.25 2.25 0 00-2.25 2.25v.894m7.5 0a48.667 48.667 0 00-7.5 0',
+};
+
+const colorMap: Record<string, { bg: string; text: string; iconBg: string; iconText: string; border: string; badge: string }> = {
+  emerald: {
+    bg: 'bg-emerald-50 dark:bg-emerald-900/10',
+    text: 'text-emerald-700 dark:text-emerald-400',
+    iconBg: 'bg-emerald-100 dark:bg-emerald-900/30',
+    iconText: 'text-emerald-600 dark:text-emerald-400',
+    border: 'border-emerald-200 dark:border-emerald-800',
+    badge: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300',
+  },
+  amber: {
+    bg: 'bg-amber-50 dark:bg-amber-900/10',
+    text: 'text-amber-700 dark:text-amber-400',
+    iconBg: 'bg-amber-100 dark:bg-amber-900/30',
+    iconText: 'text-amber-600 dark:text-amber-400',
+    border: 'border-amber-200 dark:border-amber-800',
+    badge: 'bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300',
+  },
+  violet: {
+    bg: 'bg-violet-50 dark:bg-violet-900/10',
+    text: 'text-violet-700 dark:text-violet-400',
+    iconBg: 'bg-violet-100 dark:bg-violet-900/30',
+    iconText: 'text-violet-600 dark:text-violet-400',
+    border: 'border-violet-200 dark:border-violet-800',
+    badge: 'bg-violet-100 text-violet-700 dark:bg-violet-900/40 dark:text-violet-300',
+  },
+};
+---
+
+<BaseLayout title="Υπηρεσίες" description="Υπηρεσίες εύρεσης προσωπικού: Οικιακό Προσωπικό, Τουριστικά Επαγγέλματα, Στελέχωση Επιχειρήσεων.">
+
+  <!-- Page Hero -->
+  <section class="pt-20 pb-12 bg-slate-50 dark:bg-surface-dark-alt">
+    <div class="section-container text-center">
+      <h1 class="text-4xl sm:text-5xl font-heading font-extrabold text-slate-900 dark:text-white mb-4">
+        Οι Υπηρεσίες μας
+      </h1>
+      <p class="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto font-body">
+        Τρεις πυλώνες εξειδικευμένων υπηρεσιών εύρεσης προσωπικού
+      </p>
+    </div>
+  </section>
+
+  <!-- Tab Navigation -->
+  <section class="sticky top-[64px] lg:top-[80px] z-40 bg-white/90 dark:bg-surface-dark/90 glass border-b border-slate-200 dark:border-slate-700">
+    <div class="section-container">
+      <div class="flex gap-1 py-3 overflow-x-auto" id="service-tabs">
+        {services.map((s, i) => (
+          <button
+            class="service-tab flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-heading font-medium transition-all whitespace-nowrap"
+            data-target={s.id}
+            data-index={i}
+          >
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d={iconMap[s.icon]} />
+            </svg>
+            {s.title}
+          </button>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Service Sections -->
+  <section class="section-padding">
+    <div class="section-container">
+      {services.map((service) => {
+        const colors = colorMap[service.color];
+        return (
+          <div id={service.id} class="service-section mb-20 last:mb-0 scroll-mt-40">
+            <div class="flex items-center gap-4 mb-8">
+              <div class={`w-14 h-14 rounded-2xl ${colors.iconBg} flex items-center justify-center`}>
+                <svg class={`w-7 h-7 ${colors.iconText}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d={iconMap[service.icon]} />
+                </svg>
+              </div>
+              <div>
+                <h2 class="text-2xl sm:text-3xl font-heading font-bold text-slate-900 dark:text-white">
+                  {service.title}
+                </h2>
+                <p class="text-slate-600 dark:text-slate-400 font-body">{service.description}</p>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {service.groups.map((group) => (
+                <div class={`card p-6 ${colors.bg} ${colors.border}`}>
+                  <h3 class={`font-heading font-bold ${colors.text} text-lg mb-4`}>
+                    {group.name}
+                  </h3>
+                  <ul class="space-y-2.5">
+                    {group.roles.map((role) => (
+                      <li class="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300 font-body">
+                        <svg class={`w-4 h-4 ${colors.iconText} shrink-0`} fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                        </svg>
+                        {role}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          </div>
+        );
+      })}
+
+      <!-- Guarantee Banner -->
+      <div class="card p-8 bg-primary-50 dark:bg-primary-900/20 border-primary-200 dark:border-primary-800 text-center mt-12 animate-on-scroll">
+        <svg class="w-12 h-12 mx-auto text-primary-600 dark:text-primary-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+        </svg>
+        <h3 class="text-xl font-heading font-bold text-slate-900 dark:text-white mb-2">
+          Εγγύηση Αντικατάστασης
+        </h3>
+        <p class="text-slate-600 dark:text-slate-400 font-body max-w-xl mx-auto">
+          Παρέχεται εγγύηση αντικατάστασης του προσωπικού, χωρίς άλλη οικονομική επιβάρυνση.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tab behavior script -->
+  <script is:inline>
+    (function() {
+      var tabs = document.querySelectorAll('.service-tab');
+      var sections = document.querySelectorAll('.service-section');
+
+      function activateTab(index) {
+        tabs.forEach(function(t, i) {
+          if (i === index) {
+            t.classList.add('bg-primary-100', 'dark:bg-primary-900/30', 'text-primary-700', 'dark:text-primary-300');
+            t.classList.remove('text-slate-600', 'dark:text-slate-400', 'hover:bg-slate-100', 'dark:hover:bg-slate-800');
+          } else {
+            t.classList.remove('bg-primary-100', 'dark:bg-primary-900/30', 'text-primary-700', 'dark:text-primary-300');
+            t.classList.add('text-slate-600', 'dark:text-slate-400', 'hover:bg-slate-100', 'dark:hover:bg-slate-800');
+          }
+        });
+      }
+
+      tabs.forEach(function(tab) {
+        tab.addEventListener('click', function() {
+          var target = this.dataset.target;
+          var el = document.getElementById(target);
+          if (el) {
+            el.scrollIntoView({ behavior: 'smooth' });
+            activateTab(parseInt(this.dataset.index));
+          }
+        });
+      });
+
+      // Scroll-based active tab
+      var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            var id = entry.target.id;
+            tabs.forEach(function(t, i) {
+              if (t.dataset.target === id) activateTab(i);
+            });
+          }
+        });
+      }, { threshold: 0.3, rootMargin: '-100px 0px -50% 0px' });
+
+      sections.forEach(function(s) { observer.observe(s); });
+      activateTab(0);
+
+      // Handle hash on load
+      if (window.location.hash) {
+        var hash = window.location.hash.substring(1);
+        var el = document.getElementById(hash);
+        if (el) setTimeout(function() { el.scrollIntoView({ behavior: 'smooth' }); }, 300);
+      }
+    })();
+  </script>
+</BaseLayout>

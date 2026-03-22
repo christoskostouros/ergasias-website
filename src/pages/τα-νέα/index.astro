@@ -1,0 +1,63 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const blogFiles = import.meta.glob('../../content/blog/*.md', { eager: true });
+const posts = Object.values(blogFiles)
+  .map((file: any) => ({ ...file.frontmatter }))
+  .sort((a: any, b: any) => new Date(b.date).getTime() - new Date(a.date).getTime());
+---
+
+<BaseLayout title="Τα Νέα" description="Τα τελευταία νέα, συμβουλές και πληροφορίες για την αγορά εργασίας στην Ελλάδα.">
+
+  <section class="pt-20 pb-12 bg-slate-50 dark:bg-surface-dark-alt">
+    <div class="section-container text-center">
+      <h1 class="text-4xl sm:text-5xl font-heading font-extrabold text-slate-900 dark:text-white mb-4">
+        Τα Νέα μας
+      </h1>
+      <p class="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto font-body">
+        Συμβουλές, πληροφορίες και νέα για την αγορά εργασίας
+      </p>
+    </div>
+  </section>
+
+  <section class="section-padding">
+    <div class="section-container">
+      {posts.length === 0 ? (
+        <div class="text-center py-16">
+          <p class="text-slate-500 dark:text-slate-400 font-body">Δεν υπάρχουν άρθρα ακόμη.</p>
+        </div>
+      ) : (
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {posts.map((post: any) => (
+            <a href={`/τα-νέα/${post.slug}/`} class="card group overflow-hidden animate-on-scroll">
+              {post.image && (
+                <div class="aspect-video bg-slate-200 dark:bg-slate-700 overflow-hidden">
+                  <img src={post.image} alt={post.title} class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
+                </div>
+              )}
+              <div class="p-6">
+                <div class="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400 mb-3">
+                  <span>{new Date(post.date).toLocaleDateString('el-GR', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
+                  <span>&middot;</span>
+                  <span>{post.author}</span>
+                </div>
+                <h2 class="text-lg font-heading font-bold text-slate-900 dark:text-white mb-2 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
+                  {post.title}
+                </h2>
+                <p class="text-sm text-slate-600 dark:text-slate-400 font-body line-clamp-2 mb-4">
+                  {post.excerpt}
+                </p>
+                <span class="text-sm font-medium text-primary-600 dark:text-primary-400 flex items-center gap-1 group-hover:gap-2 transition-all">
+                  Διαβάστε περισσότερα
+                  <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                  </svg>
+                </span>
+              </div>
+            </a>
+          ))}
+        </div>
+      )}
+    </div>
+  </section>
+</BaseLayout>

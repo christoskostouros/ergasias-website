@@ -1,0 +1,60 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const blogFiles = import.meta.glob('../../content/blog/*.md', { eager: true });
+  return Object.values(blogFiles).map((file: any) => ({
+    params: { slug: file.frontmatter.slug },
+    props: { post: file.frontmatter, content: file.compiledContent?.() || '' },
+  }));
+}
+
+const { post, content } = Astro.props;
+---
+
+<BaseLayout title={post.title} description={post.excerpt}>
+
+  <section class="pt-20 pb-6 bg-slate-50 dark:bg-surface-dark-alt">
+    <div class="section-container">
+      <nav class="text-sm font-body text-slate-500 dark:text-slate-400 mb-6">
+        <a href="/" class="hover:text-primary-600 dark:hover:text-primary-400">Αρχική</a>
+        <span class="mx-2">/</span>
+        <a href="/τα-νέα/" class="hover:text-primary-600 dark:hover:text-primary-400">Τα Νέα</a>
+        <span class="mx-2">/</span>
+        <span class="text-slate-700 dark:text-slate-300">{post.title}</span>
+      </nav>
+    </div>
+  </section>
+
+  <section class="pb-16">
+    <div class="section-container">
+      <article class="max-w-3xl mx-auto">
+        <div class="card p-8 lg:p-12">
+          <div class="flex items-center gap-3 text-sm text-slate-500 dark:text-slate-400 mb-6">
+            <span>{new Date(post.date).toLocaleDateString('el-GR', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
+            <span>&middot;</span>
+            <span>{post.author}</span>
+          </div>
+
+          <h1 class="text-3xl sm:text-4xl font-heading font-extrabold text-slate-900 dark:text-white mb-8">
+            {post.title}
+          </h1>
+
+          {post.image && (
+            <div class="aspect-video rounded-2xl overflow-hidden mb-8">
+              <img src={post.image} alt={post.title} class="w-full h-full object-cover" />
+            </div>
+          )}
+
+          <div class="prose-custom" set:html={content} />
+        </div>
+
+        <div class="mt-8 text-center">
+          <a href="/τα-νέα/" class="btn-outline">
+            &larr; Όλα τα Άρθρα
+          </a>
+        </div>
+      </article>
+    </div>
+  </section>
+</BaseLayout>

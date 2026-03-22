@@ -1,0 +1,157 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import settings from '../../content/config/settings.json';
+
+export async function getStaticPaths() {
+  const jobFiles = import.meta.glob('../../content/jobs/*.md', { eager: true });
+  return Object.values(jobFiles).map((file: any) => ({
+    params: { slug: file.frontmatter.slug },
+    props: { job: file.frontmatter, content: file.compiledContent?.() || '' },
+  }));
+}
+
+const { job, content } = Astro.props;
+
+const categoryLabels: Record<string, string> = {
+  oikiako: 'Οικιακό Προσωπικό',
+  touristika: 'Τουριστικά Επαγγέλματα',
+  stelechosi: 'Στελέχωση Επιχειρήσεων',
+};
+
+const categoryColors: Record<string, string> = {
+  oikiako: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300',
+  touristika: 'bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300',
+  stelechosi: 'bg-violet-100 text-violet-700 dark:bg-violet-900/40 dark:text-violet-300',
+};
+---
+
+<BaseLayout title={job.title} description={`${job.title} - ${categoryLabels[job.category]} | ${job.location}`}>
+
+  <section class="pt-20 pb-6 bg-slate-50 dark:bg-surface-dark-alt">
+    <div class="section-container">
+      <nav class="text-sm font-body text-slate-500 dark:text-slate-400 mb-6">
+        <a href="/" class="hover:text-primary-600 dark:hover:text-primary-400">Αρχική</a>
+        <span class="mx-2">/</span>
+        <a href="/αγγελίες-εργασίας/" class="hover:text-primary-600 dark:hover:text-primary-400">Αγγελίες</a>
+        <span class="mx-2">/</span>
+        <span class="text-slate-700 dark:text-slate-300">{job.title}</span>
+      </nav>
+    </div>
+  </section>
+
+  <section class="pb-16">
+    <div class="section-container">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Main Content -->
+        <div class="lg:col-span-2">
+          <div class="card p-8 lg:p-10">
+            <div class="flex items-center gap-3 mb-6">
+              <span class={`text-xs font-medium px-3 py-1 rounded-full ${categoryColors[job.category] || ''}`}>
+                {categoryLabels[job.category] || job.category}
+              </span>
+              <span class="text-sm text-slate-500 dark:text-slate-400">
+                {new Date(job.date).toLocaleDateString('el-GR', { day: 'numeric', month: 'long', year: 'numeric' })}
+              </span>
+            </div>
+
+            <h1 class="text-3xl sm:text-4xl font-heading font-extrabold text-slate-900 dark:text-white mb-8">
+              {job.title}
+            </h1>
+
+            <div class="prose-custom" set:html={content} />
+
+            {job.requirements && job.requirements.length > 0 && (
+              <div class="mt-8 p-6 rounded-2xl bg-slate-50 dark:bg-surface-dark-alt">
+                <h3 class="font-heading font-bold text-slate-900 dark:text-white mb-4">Απαιτήσεις</h3>
+                <ul class="space-y-2">
+                  {job.requirements.map((req: string) => (
+                    <li class="flex items-start gap-2 text-sm text-slate-700 dark:text-slate-300 font-body">
+                      <svg class="w-5 h-5 text-primary-500 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                      </svg>
+                      {req}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="lg:col-span-1">
+          <div class="card p-6 lg:sticky lg:top-28">
+            <h3 class="font-heading font-bold text-slate-900 dark:text-white text-lg mb-5">Στοιχεία Θέσης</h3>
+            <div class="space-y-4 mb-6">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
+                  <svg class="w-5 h-5 text-slate-600 dark:text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                </div>
+                <div>
+                  <p class="text-xs text-slate-500 dark:text-slate-400">Τοποθεσία</p>
+                  <p class="text-sm font-semibold text-slate-900 dark:text-white">{job.location}</p>
+                </div>
+              </div>
+
+              {job.salary && (
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
+                    <svg class="w-5 h-5 text-slate-600 dark:text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">Μισθός</p>
+                    <p class="text-sm font-semibold text-slate-900 dark:text-white">{job.salary}</p>
+                  </div>
+                </div>
+              )}
+
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
+                  <svg class="w-5 h-5 text-slate-600 dark:text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
+                <div>
+                  <p class="text-xs text-slate-500 dark:text-slate-400">Τύπος</p>
+                  <p class="text-sm font-semibold text-slate-900 dark:text-white">{job.employment_type}</p>
+                </div>
+              </div>
+
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
+                  <svg class="w-5 h-5 text-slate-600 dark:text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                </div>
+                <div>
+                  <p class="text-xs text-slate-500 dark:text-slate-400">Ημερομηνία</p>
+                  <p class="text-sm font-semibold text-slate-900 dark:text-white">
+                    {new Date(job.date).toLocaleDateString('el-GR')}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="space-y-3">
+              <a href="/επικοινωνία/?type=jobseeker" class="btn-primary w-full text-center text-sm">
+                Εκδήλωση Ενδιαφέροντος
+              </a>
+              <a href={`tel:${settings.phones[0]?.number}`} class="btn-outline w-full text-center text-sm">
+                Τηλεφωνική Επικοινωνία
+              </a>
+            </div>
+
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-4 text-center font-body">
+              Αποστείλτε το βιογραφικό σας ή καλέστε μας
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
