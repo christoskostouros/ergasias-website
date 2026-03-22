@@ -1,0 +1,118 @@
+backend:
+  name: git-gateway
+  branch: main
+
+locale: 'el'
+
+media_folder: 'public/images/uploads'
+public_folder: '/images/uploads'
+
+slug:
+  encoding: 'unicode'
+  clean_accents: false
+
+collections:
+  # === ΑΓΓΕΛΙΕΣ ΕΡΓΑΣΙΑΣ ===
+  - name: 'jobs'
+    label: 'Αγγελίες Εργασίας'
+    label_singular: 'Αγγελία'
+    folder: 'src/content/jobs'
+    create: true
+    slug: '{{slug}}'
+    sortable_fields: ['date', 'title']
+    fields:
+      - { label: 'Τίτλος Θέσης', name: 'title', widget: 'string', hint: 'π.χ. Γηροκόμος πλήρους απασχόλησης' }
+      - { label: 'Slug (URL)', name: 'slug', widget: 'string', hint: 'Αυτόματο από τον τίτλο, π.χ. girokomo-plirous' }
+      - label: 'Κατηγορία'
+        name: 'category'
+        widget: 'select'
+        options:
+          - { label: 'Οικιακό Προσωπικό', value: 'oikiako' }
+          - { label: 'Τουριστικά Επαγγέλματα', value: 'touristika' }
+          - { label: 'Στελέχωση Επιχειρήσεων', value: 'stelechosi' }
+      - { label: 'Τοποθεσία', name: 'location', widget: 'string', default: 'Αθήνα', hint: 'π.χ. Αθήνα, Κηφισιά, Νότια Προάστια' }
+      - { label: 'Μισθός', name: 'salary', widget: 'string', required: false, hint: 'π.χ. 800-1000€ ή Κατόπιν συμφωνίας' }
+      - { label: 'Τύπος Απασχόλησης', name: 'employment_type', widget: 'select', options: ['Πλήρης Απασχόληση', 'Μερική Απασχόληση', 'Εσωτερική'], default: 'Πλήρης Απασχόληση' }
+      - { label: 'Ημερομηνία', name: 'date', widget: 'datetime', format: 'YYYY-MM-DD', date_format: 'DD/MM/YYYY', time_format: false }
+      - { label: 'Ενεργή', name: 'active', widget: 'boolean', default: true }
+      - { label: 'Περιγραφή Θέσης', name: 'body', widget: 'markdown', hint: 'Πλήρης περιγραφή της θέσης εργασίας' }
+      - label: 'Απαιτήσεις'
+        name: 'requirements'
+        widget: 'list'
+        hint: 'Λίστα απαιτήσεων για τη θέση'
+        field: { label: 'Απαίτηση', name: 'requirement', widget: 'string' }
+
+  # === ΥΠΗΡΕΣΙΕΣ ===
+  - name: 'services'
+    label: 'Υπηρεσίες'
+    label_singular: 'Υπηρεσία'
+    folder: 'src/content/services'
+    create: true
+    slug: '{{slug}}'
+    fields:
+      - { label: 'Τίτλος', name: 'title', widget: 'string' }
+      - { label: 'Slug (URL)', name: 'slug', widget: 'string' }
+      - label: 'Εικονίδιο'
+        name: 'icon'
+        widget: 'select'
+        options:
+          - { label: 'Σπίτι', value: 'home' }
+          - { label: 'Ξενοδοχείο', value: 'hotel' }
+          - { label: 'Χαρτοφύλακας', value: 'briefcase' }
+          - { label: 'Καρδιά', value: 'heart' }
+          - { label: 'Αστέρι', value: 'star' }
+          - { label: 'Άνθρωποι', value: 'users' }
+      - { label: 'Σύντομη Περιγραφή', name: 'description', widget: 'text' }
+      - { label: 'Σειρά Εμφάνισης', name: 'order', widget: 'number', default: 0, value_type: 'int' }
+      - label: 'Υπο-υπηρεσίες'
+        name: 'sub_services'
+        widget: 'list'
+        fields:
+          - { label: 'Ομάδα', name: 'group', widget: 'string', hint: 'π.χ. Φροντίδα Παιδιών' }
+          - label: 'Ρόλοι'
+            name: 'roles'
+            widget: 'list'
+            field: { label: 'Ρόλος', name: 'role', widget: 'string' }
+      - { label: 'Αναλυτικό Περιεχόμενο', name: 'body', widget: 'markdown', required: false }
+
+  # === BLOG / ΤΑ ΝΕΑ ===
+  - name: 'blog'
+    label: 'Τα Νέα (Blog)'
+    label_singular: 'Άρθρο'
+    folder: 'src/content/blog'
+    create: true
+    slug: '{{slug}}'
+    sortable_fields: ['date', 'title']
+    fields:
+      - { label: 'Τίτλος', name: 'title', widget: 'string' }
+      - { label: 'Slug (URL)', name: 'slug', widget: 'string' }
+      - { label: 'Ημερομηνία', name: 'date', widget: 'datetime', format: 'YYYY-MM-DD', date_format: 'DD/MM/YYYY', time_format: false }
+      - { label: 'Εικόνα Εξωφύλλου', name: 'image', widget: 'image', required: false }
+      - { label: 'Περίληψη', name: 'excerpt', widget: 'text', hint: 'Μικρή περίληψη για τη λίστα άρθρων (1-2 προτάσεις)' }
+      - { label: 'Συγγραφέας', name: 'author', widget: 'string', default: 'Ergasias.info' }
+      - { label: 'Περιεχόμενο', name: 'body', widget: 'markdown' }
+
+  # === ΓΕΝΙΚΕΣ ΡΥΘΜΙΣΕΙΣ ===
+  - name: 'settings'
+    label: 'Γενικές Ρυθμίσεις'
+    files:
+      - label: 'Στοιχεία Εταιρείας'
+        name: 'site_settings'
+        file: 'src/content/config/settings.json'
+        fields:
+          - { label: 'Επωνυμία', name: 'company_name', widget: 'string' }
+          - { label: 'Τίτλος', name: 'company_title', widget: 'string' }
+          - label: 'Τηλέφωνα'
+            name: 'phones'
+            widget: 'list'
+            fields:
+              - { label: 'Περιγραφή', name: 'label', widget: 'string' }
+              - { label: 'Αριθμός', name: 'number', widget: 'string' }
+          - { label: 'Fax', name: 'fax', widget: 'string', required: false }
+          - { label: 'Email', name: 'email', widget: 'string' }
+          - { label: 'Διεύθυνση', name: 'address', widget: 'string' }
+          - { label: 'Google Map URL', name: 'map_url', widget: 'string' }
+          - { label: 'Ωράριο Λειτουργίας', name: 'working_hours', widget: 'string' }
+          - { label: 'Αριθμός Αδείας', name: 'license_number', widget: 'string' }
+          - { label: 'Χρόνια Εμπειρίας', name: 'years_experience', widget: 'string' }
+          - { label: 'Ανακοίνωση Banner', name: 'banner_announcement', widget: 'string', required: false, hint: 'Εμφανίζεται ως banner στην κορυφή (π.χ. εορταστικό ωράριο)' }
