@@ -1,5 +1,6 @@
 backend:
-  name: git-gateway
+  name: github
+  repo: christoskostouros/ergasias-website
   branch: main
 
 locale: 'el'
