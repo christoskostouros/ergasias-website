@@ -154,43 +154,7 @@
   transform: translateY(0);
 }
 
-/* Hero background image */
-.hero-bg {
-  position: relative;
-}
 
-.hero-bg::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image: url('/images/hero-bg.jpg');
-  background-size: cover;
-  background-position: center top;
-  opacity: 0.15;
-  z-index: 0;
-}
-
-/* Soft fade edges */
-.hero-bg::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: 
-    linear-gradient(to right, rgba(255,255,255,0.9) 0%, transparent 20%, transparent 80%, rgba(255,255,255,0.9) 100%),
-    linear-gradient(to bottom, transparent 60%, rgba(255,255,255,1) 100%);
-  z-index: 0;
-}
-
-.dark .hero-bg::before {
-  opacity: 0.1;
-  filter: brightness(0.5);
-}
-
-.dark .hero-bg::after {
-  background: 
-    linear-gradient(to right, rgba(15,23,42,0.9) 0%, transparent 20%, transparent 80%, rgba(15,23,42,0.9) 100%),
-    linear-gradient(to bottom, transparent 60%, rgba(15,23,42,1) 100%);
-}
 
 /* Testimonial carousel */
 .testimonial-track {
