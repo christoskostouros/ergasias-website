@@ -5,8 +5,8 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        heading: ['Inter', 'system-ui', 'sans-serif'],
-        body: ['Open Sans', 'system-ui', 'sans-serif'],
+        heading: ['Manrope', 'system-ui', 'sans-serif'],
+        body: ['Manrope', 'system-ui', 'sans-serif'],
       },
       colors: {
         primary: {
