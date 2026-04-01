@@ -2,16 +2,25 @@
   "company_name": "ΛΟΥΚΙΑ ΤΣΙΩΤΑ & ΣΙΑ Ο.Ε.",
   "company_title": "Γραφείο Ευρέσεως Εργασίας",
   "phones": [
-    { "label": "Κεντρικό", "number": "2103821550" },
-    { "label": "Δεύτερο", "number": "2105226000" },
-    { "label": "Τρίτο", "number": "2103821420" }
+    {
+      "label": "Κεντρικό",
+      "number": "2103821420"
+    },
+    {
+      "label": "Δεύτερο",
+      "number": "2103821550"
+    },
+    {
+      "label": "Τρίτο",
+      "number": "2105226000"
+    }
   ],
   "fax": "2103821720",
   "email": "info@ergasias.info",
   "address": "Αθήνα, Αττική",
-  "map_url": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3145.5!2d23.7275!3d37.9838!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzfCsDU5JzAxLjciTiAyM8KwNDMnMzkuMCJF!5e0!3m2!1sel!2sgr!4v1",
-  "working_hours": "Δευτέρα - Παρασκευή: 09:00 - 17:00",
+  "map_url": "https://maps.app.goo.gl/satvHxsSsfduddtg6",
+  "working_hours": "24 ώρες το 24ωρο",
   "license_number": "30499",
-  "years_experience": "30+",
+  "years_experience": "45+",
   "banner_announcement": ""
 }
