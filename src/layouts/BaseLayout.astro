@@ -10,7 +10,7 @@ interface Props {
   canonicalURL?: string;
 }
 
-const { title, description = 'Γραφείο Ευρέσεως Εργασίας στην Αθήνα με 30+ χρόνια εμπειρίας. Αξιόπιστη εύρεση προσωπικού και εργασίας. Αρ. Αδείας 30499.', canonicalURL } = Astro.props;
+const { title, description = 'Γραφείο Ευρέσεως Εργασίας στην Αθήνα με 45+ χρόνια εμπειρίας. Αξιόπιστη εύρεση προσωπικού και εργασίας. Αρ. Αδείας 30499.', canonicalURL } = Astro.props;
 const fullTitle = title === 'Αρχική' ? `${settings.company_title} - ${settings.company_name}` : `${title} | ${settings.company_name}`;
 ---
 
@@ -30,7 +30,8 @@ const fullTitle = title === 'Αρχική' ? `${settings.company_title} - ${sett
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="icon" type="image/png" href="/favicon.png" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 
   <!-- Smart Dark Mode: Greece timezone detection (runs before paint) -->

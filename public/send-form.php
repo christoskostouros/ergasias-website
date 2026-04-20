@@ -26,7 +26,7 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
     exit;
 }
 
-$to = 'info@ergasias.info';
+$to = 'info@ergasiainfo.gr';
 $subject = "Νέα Επικοινωνία από $name - loukiatsiota.gr";
 
 $typeLabel = $type === 'employer' ? 'Εργοδότης' : ($type === 'jobseeker' ? 'Εργαζόμενος' : 'Δεν προσδιορίστηκε');
