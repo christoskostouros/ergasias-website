@@ -30,7 +30,6 @@ collections:
         options:
           - { label: 'Οικιακό Προσωπικό', value: 'oikiako' }
           - { label: 'Τουριστικά Επαγγέλματα', value: 'touristika' }
-          - { label: 'Στελέχωση Επιχειρήσεων', value: 'stelechosi' }
       - { label: 'Τοποθεσία', name: 'location', widget: 'string', default: 'Αθήνα', hint: 'π.χ. Αθήνα, Κηφισιά, Νότια Προάστια' }
       - { label: 'Μισθός', name: 'salary', widget: 'string', required: false, hint: 'π.χ. 800-1000€ ή Κατόπιν συμφωνίας' }
       - { label: 'Τύπος Απασχόλησης', name: 'employment_type', widget: 'select', options: ['Πλήρης Απασχόληση', 'Μερική Απασχόληση', 'Εσωτερική'], default: 'Πλήρης Απασχόληση' }
