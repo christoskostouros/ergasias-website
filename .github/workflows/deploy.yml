@@ -1,4 +1,4 @@
-name: Build and Deploy to Netlify
+name: Build and Deploy to loukiatsiota.gr
 
 on:
   push:
@@ -19,11 +19,18 @@ jobs:
 
       - run: npx astro build
 
-      - name: Deploy to Netlify
-        uses: nwtgck/actions-netlify@v3
+      - name: Deploy to FTP (loukiatsiota.gr)
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
-          publish-dir: './dist'
-          production-deploy: true
-        env:
-          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-          NETLIFY_SITE_ID: ceb22e29-c334-4ec9-a5fb-7edee2275d2f
+          server: ftp.loukiatsiota.gr
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./dist/
+          server-dir: ./public_html/
+          exclude: |
+            **/.htaccess
+            **/.well-known/**
+            **/google284346e2a4b90253.html
+            **/.user.ini
+            **/php.ini
+            **/error_log
