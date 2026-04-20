@@ -44,23 +44,7 @@ const services = [
       },
     ],
   },
-  {
-    id: 'stelechosi',
-    title: 'Στελέχωση Επιχειρήσεων',
-    description: 'Παροχή διοικητικού και εμπορικού προσωπικού σε επιχειρήσεις κάθε μεγέθους.',
-    icon: 'briefcase',
-    color: 'violet',
-    groups: [
-      {
-        name: 'Διοικητικό Προσωπικό',
-        roles: ['Γραμματείς', 'Υπάλληλοι Γραφείου', 'Βοηθοί Διοίκησης', 'Υπάλληλοι Υποδοχής'],
-      },
-      {
-        name: 'Εμπορικό Προσωπικό',
-        roles: ['Πωλητές / Πωλήτριες', 'Υπεύθυνοι Πωλήσεων', 'Προσωπικό Εξυπηρέτησης Πελατών'],
-      },
-    ],
-  },
+
 ];
 
 const iconMap: Record<string, string> = {
@@ -97,7 +81,7 @@ const colorMap: Record<string, { bg: string; text: string; iconBg: string; iconT
 };
 ---
 
-<BaseLayout title="Υπηρεσίες" description="Υπηρεσίες εύρεσης προσωπικού: Οικιακό Προσωπικό, Τουριστικά Επαγγέλματα, Στελέχωση Επιχειρήσεων.">
+<BaseLayout title="Υπηρεσίες" description="Υπηρεσίες εύρεσης προσωπικού: Οικιακό Προσωπικό, Τουριστικά Επαγγέλματα.">
 
   <!-- Page Hero -->
   <section class="pt-20 pb-12 bg-slate-50 dark:bg-surface-dark-alt">
