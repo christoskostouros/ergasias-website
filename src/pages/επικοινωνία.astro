@@ -172,24 +172,44 @@ import settings from '../content/config/settings.json';
       }
     })();
 
-    // Form submission (AJAX simulation)
+    // Form submission via PHP
     document.getElementById('contact-form').addEventListener('submit', function(e) {
       e.preventDefault();
       var btn = document.getElementById('submit-btn');
       var status = document.getElementById('form-status');
+      var form = e.target;
       
       btn.disabled = true;
       btn.textContent = 'Αποστολή...';
+      status.classList.add('hidden');
       
-      // Simulate AJAX call
-      setTimeout(function() {
+      var formData = new FormData(form);
+      
+      fetch('/send-form.php', {
+        method: 'POST',
+        body: formData
+      })
+      .then(function(response) { return response.json(); })
+      .then(function(data) {
         status.classList.remove('hidden');
-        status.classList.add('bg-emerald-50', 'dark:bg-emerald-900/30', 'text-emerald-700', 'dark:text-emerald-300');
-        status.textContent = 'Το μήνυμά σας εστάλη επιτυχώς! Θα επικοινωνήσουμε σύντομα μαζί σας.';
+        if (data.success) {
+          status.className = 'text-center text-sm font-body p-4 rounded-xl bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300';
+          status.textContent = 'Το μήνυμά σας εστάλη επιτυχώς! Θα επικοινωνήσουμε σύντομα μαζί σας.';
+          form.reset();
+        } else {
+          status.className = 'text-center text-sm font-body p-4 rounded-xl bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-300';
+          status.textContent = data.error || 'Κάτι πήγε στραβά. Δοκιμάστε ξανά ή καλέστε μας.';
+        }
         btn.textContent = 'Αποστολή Μηνύματος';
         btn.disabled = false;
-        e.target.reset();
-      }, 1500);
+      })
+      .catch(function() {
+        status.classList.remove('hidden');
+        status.className = 'text-center text-sm font-body p-4 rounded-xl bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-300';
+        status.textContent = 'Σφάλμα σύνδεσης. Δοκιμάστε ξανά ή καλέστε μας.';
+        btn.textContent = 'Αποστολή Μηνύματος';
+        btn.disabled = false;
+      });
     });
   </script>
 </BaseLayout>
