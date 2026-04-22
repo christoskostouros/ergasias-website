@@ -92,6 +92,9 @@ const fullTitle = title === 'Αρχική' ? `${settings.company_title} - ${sett
   </main>
   <Footer />
 
+  <!-- Custom event tracking for GTM -->
+  <script src="/js/analytics.js" defer></script>
+
   <!-- Scroll animation observer -->
   <script is:inline>
     document.addEventListener('DOMContentLoaded', function() {

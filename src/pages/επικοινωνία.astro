@@ -195,8 +195,12 @@ import settings from '../content/config/settings.json';
         if (data.success) {
           status.className = 'text-center text-sm font-body p-4 rounded-xl bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300';
           status.textContent = 'Το μήνυμά σας εστάλη επιτυχώς! Θα επικοινωνήσουμε σύντομα μαζί σας.';
+          window.dataLayer = window.dataLayer || [];
+          window.dataLayer.push({ event: 'contact_form_success', form_name: 'contact' });
           form.reset();
         } else {
+          window.dataLayer = window.dataLayer || [];
+          window.dataLayer.push({ event: 'contact_form_error', form_name: 'contact', error: data.error || 'unknown' });
           status.className = 'text-center text-sm font-body p-4 rounded-xl bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-300';
           status.textContent = data.error || 'Κάτι πήγε στραβά. Δοκιμάστε ξανά ή καλέστε μας.';
         }
