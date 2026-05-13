@@ -13,6 +13,7 @@ $email = filter_var(trim($_POST['email'] ?? ''), FILTER_SANITIZE_EMAIL);
 $phone = strip_tags(trim($_POST['phone'] ?? ''));
 $type = strip_tags(trim($_POST['type'] ?? ''));
 $message = strip_tags(trim($_POST['message'] ?? ''));
+$recaptchaToken = trim($_POST['recaptcha_token'] ?? '');
 
 if (empty($name) || empty($email) || empty($message)) {
     http_response_code(400);
@@ -23,6 +24,23 @@ if (empty($name) || empty($email) || empty($message)) {
 if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
     http_response_code(400);
     echo json_encode(['error' => 'Μη έγκυρο email']);
+    exit;
+}
+
+// === reCAPTCHA v3 verification ===
+if (empty($recaptchaToken)) {
+    http_response_code(400);
+    echo json_encode(['error' => 'Σφάλμα ασφαλείας. Δοκιμάστε ξανά.']);
+    exit;
+}
+
+$recaptchaSecret = '6LfVE-gsAAAAAL0udE7EiSoAVe3VHeJPHv8Ua6aV';
+$recaptchaResponse = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret=' . urlencode($recaptchaSecret) . '&response=' . urlencode($recaptchaToken) . '&remoteip=' . urlencode($_SERVER['REMOTE_ADDR'] ?? ''));
+$recaptchaData = json_decode($recaptchaResponse, true);
+
+if (!$recaptchaData || !$recaptchaData['success'] || ($recaptchaData['score'] ?? 0) < 0.5 || ($recaptchaData['action'] ?? '') !== 'contact_form') {
+    http_response_code(403);
+    echo json_encode(['error' => 'Η επαλήθευση απέτυχε. Δοκιμάστε ξανά.']);
     exit;
 }
 

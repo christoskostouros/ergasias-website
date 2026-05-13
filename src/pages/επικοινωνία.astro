@@ -134,6 +134,10 @@ import settings from '../content/config/settings.json';
               </button>
 
               <div id="form-status" class="hidden text-center text-sm font-body p-4 rounded-xl"></div>
+
+              <p class="text-xs text-slate-500 dark:text-slate-400 text-center mt-2 font-body">
+                Προστατεύεται από το reCAPTCHA. Ισχύουν η <a href="https://policies.google.com/privacy" target="_blank" rel="noopener" class="underline hover:text-primary-600">Πολιτική Απορρήτου</a> και οι <a href="https://policies.google.com/terms" target="_blank" rel="noopener" class="underline hover:text-primary-600">Όροι Χρήσης</a> της Google.
+              </p>
             </form>
           </div>
         </div>
@@ -160,6 +164,9 @@ import settings from '../content/config/settings.json';
     </div>
   </section>
 
+  <!-- reCAPTCHA v3 -->
+  <script is:inline src="https://www.google.com/recaptcha/api.js?render=6LfVE-gsAAAAAD0Hi0RQsUcW4tixWZKad-DD3EPj"></script>
+
   <!-- Form Script -->
   <script is:inline>
     // Pre-fill from URL params
@@ -183,8 +190,23 @@ import settings from '../content/config/settings.json';
       btn.textContent = 'Αποστολή...';
       status.classList.add('hidden');
       
-      var formData = new FormData(form);
+      // Get reCAPTCHA token first, then send form
+      grecaptcha.ready(function() {
+        grecaptcha.execute('6LfVE-gsAAAAAD0Hi0RQsUcW4tixWZKad-DD3EPj', {action: 'contact_form'}).then(function(token) {
+          var formData = new FormData(form);
+          formData.append('recaptcha_token', token);
+          
+          submitForm(formData);
+        }).catch(function() {
+          status.classList.remove('hidden');
+          status.className = 'text-center text-sm font-body p-4 rounded-xl bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-300';
+          status.textContent = 'Σφάλμα επαλήθευσης reCAPTCHA. Δοκιμάστε ξανά.';
+          btn.textContent = 'Αποστολή Μηνύματος';
+          btn.disabled = false;
+        });
+      });
       
+      function submitForm(formData) {
       fetch('/send-form.php', {
         method: 'POST',
         body: formData
@@ -214,6 +236,7 @@ import settings from '../content/config/settings.json';
         btn.textContent = 'Αποστολή Μηνύματος';
         btn.disabled = false;
       });
+      }
     });
   </script>
 </BaseLayout>
