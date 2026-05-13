@@ -27,22 +27,36 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 }
 
 $to = 'info@ergasiainfo.gr';
-$subject = "Νέα Επικοινωνία από $name - loukiatsiota.gr";
+$subject = "[Φόρμα Επικοινωνίας] Νέο μήνυμα από $name";
 
 $typeLabel = $type === 'employer' ? 'Εργοδότης' : ($type === 'jobseeker' ? 'Εργαζόμενος' : 'Δεν προσδιορίστηκε');
 
-$body = "Νέο μήνυμα από τη φόρμα επικοινωνίας του loukiatsiota.gr\n\n";
-$body .= "Ονοματεπώνυμο: $name\n";
-$body .= "Email: $email\n";
-$body .= "Τηλέφωνο: $phone\n";
-$body .= "Τύπος: $typeLabel\n\n";
-$body .= "Μήνυμα:\n$message\n";
+// Build HTML body (better deliverability)
+$bodyHtml = "<html><body style='font-family:Arial,sans-serif;'>";
+$bodyHtml .= "<h2 style='color:#0A58CA;'>Νέο μήνυμα από τη φόρμα επικοινωνίας</h2>";
+$bodyHtml .= "<p><strong>Ονοματεπώνυμο:</strong> " . htmlspecialchars($name) . "</p>";
+$bodyHtml .= "<p><strong>Email:</strong> <a href='mailto:" . htmlspecialchars($email) . "'>" . htmlspecialchars($email) . "</a></p>";
+$bodyHtml .= "<p><strong>Τηλέφωνο:</strong> " . htmlspecialchars($phone) . "</p>";
+$bodyHtml .= "<p><strong>Τύπος:</strong> " . htmlspecialchars($typeLabel) . "</p>";
+$bodyHtml .= "<hr><p><strong>Μήνυμα:</strong></p>";
+$bodyHtml .= "<p>" . nl2br(htmlspecialchars($message)) . "</p>";
+$bodyHtml .= "<hr><p style='color:#888;font-size:12px;'>Απεστάλη από τη φόρμα επικοινωνίας του loukiatsiota.gr</p>";
+$bodyHtml .= "</body></html>";
 
-$headers = "From: noreply@loukiatsiota.gr\r\n";
-$headers .= "Reply-To: $email\r\n";
-$headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
+// Use the recipient email as sender (so it shows up in the same mail account)
+// This avoids the "foreign sender" rejection
+$headers = "From: \"Φόρμα loukiatsiota.gr\" <info@ergasiainfo.gr>\r\n";
+$headers .= "Reply-To: \"$name\" <$email>\r\n";
+$headers .= "MIME-Version: 1.0\r\n";
+$headers .= "Content-Type: text/html; charset=UTF-8\r\n";
+$headers .= "X-Mailer: PHP/" . phpversion() . "\r\n";
 
-if (mail($to, $subject, $body, $headers)) {
+if (mail($to, $subject, $bodyHtml, $headers)) {
+    // Log the submission for debugging
+    $logFile = __DIR__ . '/form-submissions.log';
+    $logEntry = date('Y-m-d H:i:s') . " | $name | $email | $phone | $typeLabel\n";
+    @file_put_contents($logFile, $logEntry, FILE_APPEND);
+    
     echo json_encode(['success' => true, 'message' => 'Το μήνυμα εστάλη επιτυχώς!']);
 } else {
     http_response_code(500);
